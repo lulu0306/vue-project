@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src='https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js'></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>Vue Project</title>
+</head>
+<body>
+    <h1>Welcome to my Blog Site</h1>
+    <div id="blogPosts">
+        <blog-post
+        v-for='post in posts'
+        v-bind:blogpost ='post'
+        >
+        </blog-post>
+    </div>
+    <div id="blogPostCreation">
+        <h2>Make a new Blog Post</h2>
+        <input v-model='title'><br>
+        <input v-model='username'><br>
+        <input v-model='date'><br>
+        <input v-model='content'><br>
+        <button v-on:click='publishPost'> Publish Post</button>
+    </div>
+    <script>
+    Vue.component('blog-post',{
+        props:['blogpost'],
+        template:`<div id="siglePost">
+            <h2>{{blogpost.title}}</h2>
+            <h3>{{blogpost.username}}</h3>
+            <h4>{{blogpost.date}}</h4>
+            <h2>{{blogpost.content}}</h2>
+        </div>
+        `,
+    })
+
+    var blogVue = new Vue ({
+        el:'#blogPosts',
+        data:{
+            posts:[
+                {title:'first post', username:'luciana',date:'November 04 2019', content:'interesting post '},
+                {title:'second post ', username:'luciana', date:'November 04 2019', content:'bla bla bla '}
+            ]
+        }
+    })
+
+    var postBlogVue = new Vue({
+        el:'#blogPostCreation',
+        data:{
+            title:'',
+            username:'',
+            date:'',
+            content:''
+        },
+        methods:{
+            publishPost: function(){
+                var postData = {
+                    title: this.title,
+                    username: this.username,
+                    date: this.date,
+                    content: this.content
+                }
+
+                blogVue.posts.push(postData)
+                this.title= '',
+                this.username = '',
+                this.date = '',
+                this.content= ''
+            }
+        }
+    })
+    </script>
+</body>
+</html>
